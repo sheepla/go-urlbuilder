@@ -1,10 +1,10 @@
 <div align="center">
 
-# 🔗 urlbuilder
+# 🔗 go-urlbuilder
 
 </div>
 
-**urlbuilder** urlbuilder is a Go module based on `net/url` standard module, aimed at safely constructing URL strings with a concise syntax.
+**go-urlbuilder** is a Go module based on `net/url` standard module, aimed at safely constructing URL strings with a concise syntax.
 
 ## Why?
 
@@ -22,7 +22,7 @@ package main
 import (
 	"fmt"
 
-	"github.com/sheepla/urlbuilder"
+	"github.com/sheepla/go-urlbuilder"
 )
 
 var sourceURL = "https://localhost:8080/path/to/resource#helloworld?key1=value1&key2=value2"
