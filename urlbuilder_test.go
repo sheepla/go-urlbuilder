@@ -9,7 +9,7 @@ import (
 )
 
 func TestBasic(t *testing.T) {
-    sourceURL := "https://localhost:8080/path/to/resource?key1=value1&key2=value2#helloWorld"
+	sourceURL := "https://localhost:8080/path/to/resource?key1=value1&key2=value2#helloWorld"
 	u, err := urlbuilder.Parse(sourceURL)
 	if err != nil {
 		t.Fatal(err)
@@ -18,7 +18,7 @@ func TestBasic(t *testing.T) {
 	u.SetScheme("http").
 		SetHost("another.example.com:12345").
 		SetFragument("anotherFragument").
-        SetUserWithPassword("u$er1", "P@$$w0rd!")
+		SetUserWithPassword("u$er1", "P@$$w0rd!")
 
 	have, err := u.String()
 	if err != nil {
@@ -31,56 +31,55 @@ func TestBasic(t *testing.T) {
 	}
 }
 
-
 func TestPathEditing(t *testing.T) {
-    sourceURL := "https://localhost:8080/あ/progr@mm!ng"
+	sourceURL := "https://localhost:8080/あ/progr@mm!ng"
 	u, err := urlbuilder.Parse(sourceURL)
 	if err != nil {
 		t.Fatal(err)
 	}
 
-    u.EditPath(func(elements []string) []string {
-        t.Log("current elements: ", elements)
-        elements = append(elements, "Go言語")
-        t.Log("edited elements: ", elements)
+	u.EditPath(func(elements []string) []string {
+		t.Log("current elements: ", elements)
+		elements = append(elements, "Go言語")
+		t.Log("edited elements: ", elements)
 
-        return elements
-    }).
-    AppendPath("foo", "bar")
+		return elements
+	}).
+		AppendPath("foo", "bar")
 
-    have, err := u.String()
-    if err != nil {
-        t.Fatal(err)
-    }
+	have, err := u.String()
+	if err != nil {
+		t.Fatal(err)
+	}
 
-    want := "https://localhost:8080/%25E3%2581%2582/progr@mm%2521ng/Go%25E8%25A8%2580%25E8%25AA%259E/foo/bar"
-    if have != want {
-        t.Fatalf("have=%s\nwant=%s\n", have, want)
-    }
-    
+	want := "https://localhost:8080/%25E3%2581%2582/progr@mm%2521ng/Go%25E8%25A8%2580%25E8%25AA%259E/foo/bar"
+	if have != want {
+		t.Fatalf("have=%s\nwant=%s\n", have, want)
+	}
+
 }
 
 func TestQueryEditing(t *testing.T) {
-    sourceURL := "https://localhost:8080/path/to/resource?key1=value1&key2=value2"
+	sourceURL := "https://localhost:8080/path/to/resource?key1=value1&key2=value2"
 	u, err := urlbuilder.Parse(sourceURL)
 	if err != nil {
 		t.Fatal(err)
 	}
 
-    u.EditQuery(func(q url.Values) url.Values {
-        t.Logf("current query: %s", q.Encode())
+	u.EditQuery(func(q url.Values) url.Values {
+		t.Logf("current query: %s", q.Encode())
 
-        q.Set("key1", "value1-edited")
-        q.Del("key2")
-        q.Add("key3", "value3")
+		q.Set("key1", "value1-edited")
+		q.Del("key2")
+		q.Add("key3", "value3")
 
-        t.Logf("key1: %s", q.Get("key1"))
-        t.Logf("key2: %s", q.Get("key2"))
-        t.Logf("key3: %s", q.Get("key3"))
-        t.Logf("edited query: %s", q.Encode())
+		t.Logf("key1: %s", q.Get("key1"))
+		t.Logf("key2: %s", q.Get("key2"))
+		t.Logf("key3: %s", q.Get("key3"))
+		t.Logf("edited query: %s", q.Encode())
 
-        return q
-    })
+		return q
+	})
 
 	have, err := u.String()
 	if err != nil {

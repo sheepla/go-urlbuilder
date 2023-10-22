@@ -51,11 +51,11 @@ func (u *URL) EditPath(editFunc func([]string) []string) *URL {
 }
 
 func (u *URL) AppendPath(elements ...string) *URL {
-    u.EditPath(func(current []string) []string {
-        return append(current, elements...)
-    })
+	u.EditPath(func(current []string) []string {
+		return append(current, elements...)
+	})
 
-    return u
+	return u
 }
 
 func (u *URL) SetScheme(scheme string) *URL {
@@ -71,17 +71,16 @@ func (u *URL) SetHost(host string) *URL {
 }
 
 func (u *URL) SetUser(userName string) *URL {
-    u.internal.User = url.User(userName)
+	u.internal.User = url.User(userName)
 
-    return u
+	return u
 }
 
 func (u *URL) SetUserWithPassword(userName, password string) *URL {
-    u.internal.User = url.UserPassword(userName, password)
+	u.internal.User = url.UserPassword(userName, password)
 
-    return u
+	return u
 }
-
 
 func (u *URL) SetFragument(fragument string) *URL {
 	u.internal.Fragment = fragument
