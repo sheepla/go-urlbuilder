@@ -40,7 +40,7 @@ func ExampleURLBuilder() {
 	u.SetScheme("ftp").
 		SetHost("another.example.com:12345").
 		SetFragument("anotherFragument").
-        SetPath("/", "日本語", "with space").
+		SetPath("/", "日本語", "with space").
 		AddQuery("key3", "key3").
 		RemoveQuery("key2")
 
