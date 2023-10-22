@@ -33,7 +33,30 @@ func TestBasic(t *testing.T) {
 
 
 func TestPathEditing(t *testing.T) {
+    sourceURL := "https://localhost:8080/あ/progr@mm!ng"
+	u, err := urlbuilder.Parse(sourceURL)
+	if err != nil {
+		t.Fatal(err)
+	}
 
+    u.EditPath(func(elements []string) []string {
+        t.Log("current elements: ", elements)
+        elements = append(elements, "Go言語")
+        t.Log("edited elements: ", elements)
+
+        return elements
+    })
+
+    have, err := u.String()
+    if err != nil {
+        t.Fatal(err)
+    }
+
+    want := "https://localhost:8080/%25E3%2581%2582/progr@mm%2521ng/Go%25E8%25A8%2580%25E8%25AA%259E"
+    if have != want {
+        t.Fatalf("have=%s\nwant=%s\n", have, want)
+    }
+    
 }
 
 func TestQueryEditing(t *testing.T) {
