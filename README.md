@@ -9,8 +9,7 @@
 ## Why?
 
 It is a good idea to use the `net/url` standard module when safely constructing URL strings. 
-However, if you use `net/url` as is, you often need to prepare temporary variables, and have to write non-declaretive
-which I felt was a bit cumbersome when building complex URLs over and over again.
+However, if you use `net/url` as is, you often need to prepare temporary variables, and have to write non-declaretive code which I felt was a bit cumbersome when building complex URLs over and over again.
 
 This module was created as a concise and easy way to construct URL strings based on `net/url`.
 
@@ -21,6 +20,7 @@ package main
 
 import (
 	"fmt"
+	"net/url"
 
 	"github.com/sheepla/go-urlbuilder"
 )
@@ -28,24 +28,26 @@ import (
 var sourceURL = "https://localhost:8080/path/to/resource#helloworld?key1=value1&key2=value2"
 
 func main() {
-	ExampleURLBuilder()
-}
-
-func ExampleURLBuilder() {
 	u, err := urlbuilder.Parse(sourceURL)
 	if err != nil {
 		panic(err)
 	}
 
-	u.SetScheme("ftp").
-		SetHost("another.example.com:12345").
+	u.SetScheme("http").
+		SetHost("example.com:12345").
 		SetFragument("anotherFragument").
-		SetPath("/", "日本語", "with space").
-		AddQuery("key3", "key3").
-		RemoveQuery("key2")
+		EditPath(func(elements []string) []string {
+			return append(elements, "Go言語")
+		}).
+		EditQuery(func(q url.Values) url.Values {
+			q.Set("key1", "key1-edited")
+			q.Del("key2")
+			q.Add("key3", "value3")
 
-	// Will output:
-	// ftp://another.example.com:12345/%25E6%2597%25A5%25E6%259C%25AC%25E8%25AA%259E/with%2520space?key3=key3#anotherFragument
+			return q
+		})
+
+		// => http://example.com:12345/path/to/resource/Go%25E8%25A8%2580%25E8%25AA%259E?key1=key1-edited&key3=value3#anotherFragument
 	fmt.Println(u.MustString())
 }
 ```
