@@ -50,6 +50,14 @@ func (u *URL) EditPath(editFunc func([]string) []string) *URL {
 	return u
 }
 
+func (u *URL) AppendPath(elements ...string) *URL {
+    u.EditPath(func(current []string) []string {
+        return append(current, elements...)
+    })
+
+    return u
+}
+
 func (u *URL) SetScheme(scheme string) *URL {
 	u.internal.Scheme = scheme
 

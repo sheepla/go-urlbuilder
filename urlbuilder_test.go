@@ -45,14 +45,15 @@ func TestPathEditing(t *testing.T) {
         t.Log("edited elements: ", elements)
 
         return elements
-    })
+    }).
+    AppendPath("foo", "bar")
 
     have, err := u.String()
     if err != nil {
         t.Fatal(err)
     }
 
-    want := "https://localhost:8080/%25E3%2581%2582/progr@mm%2521ng/Go%25E8%25A8%2580%25E8%25AA%259E"
+    want := "https://localhost:8080/%25E3%2581%2582/progr@mm%2521ng/Go%25E8%25A8%2580%25E8%25AA%259E/foo/bar"
     if have != want {
         t.Fatalf("have=%s\nwant=%s\n", have, want)
     }
