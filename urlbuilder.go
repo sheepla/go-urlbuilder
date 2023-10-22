@@ -95,6 +95,33 @@ func (u *URL) EditQuery(editFunc func(url.Values) url.Values) *URL {
 	return u
 }
 
+func (u *URL) SetQuery(key, value string) *URL {
+	u.EditQuery(func(q url.Values) url.Values {
+		q.Set(key, value)
+		return q
+	})
+
+	return u
+}
+
+func (u *URL) AddQuery(key, value string) *URL {
+	u.EditQuery(func(q url.Values) url.Values {
+		q.Add(key, value)
+		return q
+	})
+
+	return u
+}
+
+func (u *URL) RemoveQuery(key string) *URL {
+	u.EditQuery(func(q url.Values) url.Values {
+		q.Del(key)
+		return q
+	})
+
+	return u
+}
+
 func (u *URL) String() (string, error) {
 	return u.internal.String(), u.err
 }

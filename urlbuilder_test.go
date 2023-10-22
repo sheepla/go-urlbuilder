@@ -87,7 +87,28 @@ func TestQueryEditing(t *testing.T) {
 	}
 
 	want := "https://localhost:8080/path/to/resource?key1=value1-edited&key3=value3"
+	if have != want {
+		t.Fatalf("have=%s\nwant=%s\n", have, want)
+	}
+}
 
+func TestQueryEditingEx(t *testing.T) {
+	sourceURL := "https://localhost:8080/path/to/resource?key1=value1&key2=value2"
+	u, err := urlbuilder.Parse(sourceURL)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	u.SetQuery("key1", "key1-edited").
+		RemoveQuery("key2").
+		AddQuery("key3", "value3")
+
+	have, err := u.String()
+	if err != nil {
+		t.Fatalf("an error occurred on constructing URL: %s\n", err)
+	}
+
+	want := "https://localhost:8080/path/to/resource?key1=key1-edited&key3=value3"
 	if have != want {
 		t.Fatalf("have=%s\nwant=%s\n", have, want)
 	}
