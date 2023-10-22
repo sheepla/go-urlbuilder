@@ -16,17 +16,10 @@ func (u *URL) Error() string {
 
 func Parse(s string) (*URL, error) {
 	netURL, err := url.Parse(s)
-	if err != nil {
-		return &URL{
-			internal: netURL,
-			err:      err,
-		}, err
-	}
-
 	return &URL{
 		internal: netURL,
-		err:      nil,
-	}, nil
+		err:      err,
+	}, err
 }
 
 func (u *URL) SetPath(base string, elements ...string) *URL {
@@ -39,7 +32,17 @@ func (u *URL) SetPath(base string, elements ...string) *URL {
 
 func (u *URL) EditPath(editFunc func([]string) []string) *URL {
 	elements := strings.Split(u.internal.Path, "/")
+
+	// To prevent double escaping,
+	// each path element is unescaped before being passed to the editing function.
+	for i := 0; i < len(elements); i++ {
+		if escaped, err := url.PathUnescape(elements[i]); err == nil {
+			elements[i] = escaped
+		}
+	}
+
 	elements = editFunc(elements)
+
 	path, err := url.JoinPath("/", elements...)
 	u.err = err
 	u.internal.Path = path
@@ -59,35 +62,16 @@ func (u *URL) SetHost(host string) *URL {
 	return u
 }
 
+
 func (u *URL) SetFragument(fragument string) *URL {
 	u.internal.Fragment = fragument
 
 	return u
 }
 
-func (u *URL) SetQuery(key, value string) *URL {
-	q, err := url.ParseQuery(u.internal.RawQuery)
-	u.err = err
-	q.Set(key, value)
-	u.internal.RawQuery = q.Encode()
-
-	return u
-}
-
-func (u *URL) AddQuery(key, value string) *URL {
-	q, err := url.ParseQuery(u.internal.RawQuery)
-	u.err = err
-	q.Add(key, value)
-	u.internal.RawQuery = q.Encode()
-
-	return u
-}
-
-func (u *URL) RemoveQuery(key string) *URL {
-	q, err := url.ParseQuery(u.internal.RawQuery)
-	u.err = err
-	q.Del(key)
-	u.internal.RawQuery = q.Encode()
+func (u *URL) EditQuery(editFunc func(url.Values) url.Values) *URL {
+	edited := editFunc(u.internal.Query())
+	u.internal.RawQuery = edited.Encode()
 
 	return u
 }
