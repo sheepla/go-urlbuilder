@@ -17,18 +17,20 @@ func TestBasic(t *testing.T) {
 
 	u.SetScheme("http").
 		SetHost("another.example.com:12345").
-		SetFragument("anotherFragument")
+		SetFragument("anotherFragument").
+        SetUserWithPassword("u$er1", "P@$$w0rd!")
 
 	have, err := u.String()
 	if err != nil {
 		t.Fatalf("an error occurred on constructing URL: %s\n", err)
 	}
 
-	want := "http://another.example.com:12345/path/to/resource?key1=value1&key2=value2#anotherFragument"
+	want := "http://u$er1:P%40$$w0rd%21@another.example.com:12345/path/to/resource?key1=value1&key2=value2#anotherFragument"
 	if have != want {
 		t.Fatalf("have=%s\nwant=%s\n", have, want)
 	}
 }
+
 
 func TestPathEditing(t *testing.T) {
 

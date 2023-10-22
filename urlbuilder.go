@@ -62,6 +62,18 @@ func (u *URL) SetHost(host string) *URL {
 	return u
 }
 
+func (u *URL) SetUser(userName string) *URL {
+    u.internal.User = url.User(userName)
+
+    return u
+}
+
+func (u *URL) SetUserWithPassword(userName, password string) *URL {
+    u.internal.User = url.UserPassword(userName, password)
+
+    return u
+}
+
 
 func (u *URL) SetFragument(fragument string) *URL {
 	u.internal.Fragment = fragument
