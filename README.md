@@ -28,9 +28,9 @@ import (
 var sourceURL = "https://localhost:8080/path/to/resource#helloworld?key1=value1&key2=value2"
 
 func main() {
-	u, err := urlbuilder.Parse(sourceURL)
-	if err != nil {
-		panic(err)
+	u := urlbuilder.Parse(sourceURL)
+	if u.Err != nil {
+		panic(u.Err)
 	}
 
 	u.SetScheme("http").
