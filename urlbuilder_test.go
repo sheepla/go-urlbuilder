@@ -10,9 +10,9 @@ import (
 
 func TestBasic(t *testing.T) {
 	sourceURL := "https://localhost:8080/path/to/resource?key1=value1&key2=value2#helloWorld"
-	u := urlbuilder.Parse(sourceURL)
-	if u.Err != nil {
-		t.Fatal(u.Err)
+	u, err := urlbuilder.Parse(sourceURL)
+	if err != nil {
+		t.Fatal(err)
 	}
 
 	u.SetScheme("http").
@@ -33,9 +33,9 @@ func TestBasic(t *testing.T) {
 
 func TestPathEditing(t *testing.T) {
 	sourceURL := "https://localhost:8080/あ/progr@mm!ng"
-	u := urlbuilder.Parse(sourceURL)
-	if u.Err != nil {
-		t.Fatal(u.Err)
+	u, err := urlbuilder.Parse(sourceURL)
+	if err != nil {
+		t.Fatal(err)
 	}
 
 	u.EditPath(func(elements []string) []string {
@@ -61,9 +61,9 @@ func TestPathEditing(t *testing.T) {
 
 func TestQueryEditing(t *testing.T) {
 	sourceURL := "https://localhost:8080/path/to/resource?key1=value1&key2=value2"
-	u := urlbuilder.Parse(sourceURL)
-	if u.Err != nil {
-		t.Fatal(u.Err)
+	u, err := urlbuilder.Parse(sourceURL)
+	if err != nil {
+		t.Fatal(err)
 	}
 
 	u.EditQuery(func(q url.Values) url.Values {
@@ -94,9 +94,9 @@ func TestQueryEditing(t *testing.T) {
 
 func TestQueryEditingEx(t *testing.T) {
 	sourceURL := "https://localhost:8080/path/to/resource?key1=value1&key2=value2"
-	u := urlbuilder.Parse(sourceURL)
-	if u.Err != nil {
-		t.Fatal(u.Err)
+	u, err := urlbuilder.Parse(sourceURL)
+	if err != nil {
+		t.Fatal(err)
 	}
 
 	u.SetQuery("key1", "key1-edited").

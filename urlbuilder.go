@@ -7,24 +7,29 @@ import (
 
 type URL struct {
 	internal *url.URL
-	Err      error
+	err      error
 }
 
-func (u *URL) Error() string {
-	return u.Err.Error()
-}
-
-func Parse(s string) *URL {
+func Parse(s string) (*URL, error) {
 	netURL, err := url.Parse(s)
 	return &URL{
 		internal: netURL,
-		Err:      err,
+		err:      err,
+	}, err
+}
+
+func MustParse(s string) *URL {
+	u, err := Parse(s)
+	if err != nil {
+		panic(err)
 	}
+
+	return u
 }
 
 func (u *URL) SetPath(base string, elements ...string) *URL {
 	path, err := url.JoinPath(base, elements...)
-	u.Err = err
+	u.err = err
 	u.internal.Path = path
 
 	return u
@@ -44,7 +49,7 @@ func (u *URL) EditPath(editFunc func([]string) []string) *URL {
 	elements = editFunc(elements)
 
 	path, err := url.JoinPath("/", elements...)
-	u.Err = err
+	u.err = err
 	u.internal.Path = path
 
 	return u
@@ -123,7 +128,7 @@ func (u *URL) RemoveQuery(key string) *URL {
 }
 
 func (u *URL) String() (string, error) {
-	return u.internal.String(), u.Err
+	return u.internal.String(), u.err
 }
 
 func (u *URL) MustString() string {

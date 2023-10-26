@@ -10,10 +10,7 @@ import (
 var sourceURL = "https://localhost:8080/path/to/resource#helloworld?key1=value1&key2=value2"
 
 func main() {
-	u := urlbuilder.Parse(sourceURL)
-	if u.Err != nil {
-		panic(u.Err)
-	}
+	u := urlbuilder.MustParse(sourceURL)
 
 	u.SetScheme("http").
 		SetHost("example.com:12345").
