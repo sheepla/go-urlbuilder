@@ -82,8 +82,8 @@ func (u *URL) SetUserWithPassword(userName, password string) *URL {
 	return u
 }
 
-func (u *URL) SetFragument(fragument string) *URL {
-	u.internal.Fragment = fragument
+func (u *URL) SetFragment(fragment string) *URL {
+	u.internal.Fragment = fragment
 
 	return u
 }

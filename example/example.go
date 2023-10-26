@@ -17,7 +17,7 @@ func main() {
 
 	u.SetScheme("http").
 		SetHost("example.com:12345").
-		SetFragument("anotherFragument").
+		SetFragment("anotherFragment").
 		EditPath(func(elements []string) []string {
 			return append(elements, "Go言語")
 		}).
@@ -29,6 +29,6 @@ func main() {
 			return q
 		})
 
-		// => http://example.com:12345/path/to/resource/Go%25E8%25A8%2580%25E8%25AA%259E?key1=key1-edited&key3=value3#anotherFragument
+	// => http://example.com:12345/path/to/resource/Go%25E8%25A8%2580%25E8%25AA%259E?key1=key1-edited&key3=value3#anotherFragment
 	fmt.Println(u.MustString())
 }
